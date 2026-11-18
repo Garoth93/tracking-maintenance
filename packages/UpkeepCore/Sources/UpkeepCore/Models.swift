@@ -176,7 +176,7 @@ public struct MeterReading: Codable, Equatable, Sendable, Identifiable {
 }
 
 /// A logged operation: Tagliando on 12 mar 2026 at 45.000 km, 320 €.
-public struct Operation: Codable, Equatable, Sendable, Identifiable {
+public struct OperationRecord: Codable, Equatable, Sendable, Identifiable {
     public var id: String
     public var assetID: String
     public var typeID: String
@@ -345,7 +345,7 @@ public struct AppData: Codable, Equatable, Sendable {
     public var operationTypes: [OperationType]
     public var assets: [Asset]
     public var readings: [MeterReading]
-    public var operations: [Operation]
+    public var operations: [OperationRecord]
     public var mountings: [Mounting]
     public var settings: AppSettings
 
@@ -354,7 +354,7 @@ public struct AppData: Codable, Equatable, Sendable {
         operationTypes: [OperationType] = [],
         assets: [Asset] = [],
         readings: [MeterReading] = [],
-        operations: [Operation] = [],
+        operations: [OperationRecord] = [],
         mountings: [Mounting] = [],
         settings: AppSettings = AppSettings()
     ) {
@@ -380,7 +380,7 @@ public struct AppData: Codable, Equatable, Sendable {
         assetTypes = try c.decodeIfPresent([AssetType].self, forKey: .assetTypes) ?? []
         operationTypes = try c.decodeIfPresent([OperationType].self, forKey: .operationTypes) ?? []
         readings = try c.decodeIfPresent([MeterReading].self, forKey: .readings) ?? []
-        operations = try c.decodeIfPresent([Operation].self, forKey: .operations) ?? []
+        operations = try c.decodeIfPresent([OperationRecord].self, forKey: .operations) ?? []
         mountings = try c.decodeIfPresent([Mounting].self, forKey: .mountings) ?? []
         settings = try c.decodeIfPresent(AppSettings.self, forKey: .settings) ?? AppSettings()
     }

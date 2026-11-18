@@ -42,7 +42,7 @@ extension AppData {
         let years = Array(Set(all.map(\.date.year))).sorted(by: >)
         let ops = all.filter { year == nil || $0.date.year == year }
 
-        func slices(key: (Operation) -> String, meta: (String) -> (String, String, String)) -> [CostSlice] {
+        func slices(key: (OperationRecord) -> String, meta: (String) -> (String, String, String)) -> [CostSlice] {
             var totals: [String: (Double, Int)] = [:]
             for o in ops {
                 let k = key(o)

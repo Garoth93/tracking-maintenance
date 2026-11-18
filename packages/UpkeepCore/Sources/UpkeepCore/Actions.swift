@@ -116,7 +116,7 @@ extension AppData {
 
     // MARK: Operations
 
-    public mutating func saveOperation(_ op: Operation) {
+    public mutating func saveOperation(_ op: OperationRecord) {
         if let i = operations.firstIndex(where: { $0.id == op.id }) {
             operations[i] = op
         } else {

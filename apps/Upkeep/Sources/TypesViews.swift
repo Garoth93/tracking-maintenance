@@ -152,7 +152,7 @@ struct AssetTypeFormView: View {
     }
 }
 
-// MARK: - Operation types
+// MARK: - OperationRecord types
 
 struct OperationTypesView: View {
     @Environment(AppStore.self) private var store

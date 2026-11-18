@@ -159,11 +159,11 @@ final class DeadlineTests: XCTestCase {
 
     func testOnlyLatestOperationCountsAndNoFollowUp() {
         var d = Defaults.demo(today: today)
-        d.saveOperation(Operation(assetID: "demo.car", typeID: Defaults.OpID.tax, date: today, cost: 245))
+        d.saveOperation(OperationRecord(assetID: "demo.car", typeID: Defaults.OpID.tax, date: today, cost: 245))
         let tax = deadline(d, "demo.car", Defaults.OpID.tax)!
         XCTAssertEqual(tax.dueDate, today.adding(months: 12))
         XCTAssertEqual(tax.status, .ok)
-        d.saveOperation(Operation(assetID: "demo.car", typeID: Defaults.OpID.tax, date: today.adding(days: 1), noFollowUp: true))
+        d.saveOperation(OperationRecord(assetID: "demo.car", typeID: Defaults.OpID.tax, date: today.adding(days: 1), noFollowUp: true))
         XCTAssertNil(deadline(d, "demo.car", Defaults.OpID.tax))
     }
 
@@ -177,7 +177,7 @@ final class DeadlineTests: XCTestCase {
         var d = AppData(assetTypes: Defaults.assetTypes, operationTypes: Defaults.operationTypes)
         d.saveAsset(Asset(id: "a", typeID: Defaults.TypeID.car, name: "A", initialMeter: 0, createdOn: today.adding(days: -100)))
         d.addReading(assetID: "a", date: today, value: 10000) // 100 km/day
-        d.saveOperation(Operation(assetID: "a", typeID: Defaults.OpID.oil, date: today, meter: 10000))
+        d.saveOperation(OperationRecord(assetID: "a", typeID: Defaults.OpID.oil, date: today, meter: 10000))
         let dl = d.deadlines(today: today).first!
         XCTAssertEqual(dl.dueMeter, 20000)
         XCTAssertEqual(dl.estimatedMeterDate, today.adding(days: 100))

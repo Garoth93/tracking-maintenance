@@ -32,7 +32,7 @@ extension AppData {
 
     public func isComponent(_ asset: Asset) -> Bool { type(of: asset)?.isComponent ?? false }
 
-    /// Operation types offered for an object, in list order.
+    /// OperationRecord types offered for an object, in list order.
     public func operationTypes(for asset: Asset) -> [OperationType] {
         operationTypes.filter { $0.applies(to: asset.typeID) }
     }
@@ -44,7 +44,7 @@ extension AppData {
             .sorted { $0.order != $1.order ? $0.order < $1.order : Fmt.compare($0.name, $1.name) }
     }
 
-    public func operations(of assetID: String) -> [Operation] {
+    public func operations(of assetID: String) -> [OperationRecord] {
         operations
             .filter { $0.assetID == assetID }
             .sorted(by: Self.newestFirst)
@@ -54,7 +54,7 @@ extension AppData {
         readings.filter { $0.assetID == assetID }.sorted { $0.date != $1.date ? $0.date > $1.date : $0.value > $1.value }
     }
 
-    static func newestFirst(_ a: Operation, _ b: Operation) -> Bool {
+    static func newestFirst(_ a: OperationRecord, _ b: OperationRecord) -> Bool {
         if a.date != b.date { return a.date > b.date }
         return (a.meter ?? -1) > (b.meter ?? -1)
     }
@@ -151,7 +151,7 @@ extension AppData {
         operations.filter { $0.assetID == assetID }.reduce(0) { $0 + ($1.cost ?? 0) }
     }
 
-    public func lastOperation(of assetID: String) -> Operation? {
+    public func lastOperation(of assetID: String) -> OperationRecord? {
         operations(of: assetID).first
     }
 }

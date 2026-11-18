@@ -52,8 +52,8 @@ public struct Deadline: Identifiable, Equatable, Sendable {
 
 extension AppData {
     /// Latest operation of each (object, type) pair.
-    func latestOperations() -> [Operation] {
-        var latest: [String: Operation] = [:]
+    func latestOperations() -> [OperationRecord] {
+        var latest: [String: OperationRecord] = [:]
         for op in operations {
             let key = op.assetID + "|" + op.typeID
             if let current = latest[key], !Self.newestFirst(op, current) { continue }
@@ -62,7 +62,7 @@ extension AppData {
         return Array(latest.values)
     }
 
-    public func deadline(for op: Operation, today: DayDate) -> Deadline? {
+    public func deadline(for op: OperationRecord, today: DayDate) -> Deadline? {
         guard !op.noFollowUp, let type = operationType(op.typeID) else { return nil }
         let dueDate: DayDate? = op.dueDate ?? type.interval.months.flatMap { $0 > 0 ? op.date.adding(months: $0) : nil }
         let dueMeter: Double? = op.dueMeter ?? {

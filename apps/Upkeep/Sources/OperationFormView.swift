@@ -7,7 +7,7 @@ struct OperationFormView: View {
     @Environment(\.dismiss) private var dismiss
 
     let assetID: String
-    let original: Operation?
+    let original: OperationRecord?
     @State private var typeID: String?
     @State private var date: DayDate
     @State private var meter: String
@@ -22,7 +22,7 @@ struct OperationFormView: View {
     @State private var confirmDelete = false
     @State private var didPrefill = false
 
-    init(assetID: String, original: Operation?, presetTypeID: String?) {
+    init(assetID: String, original: OperationRecord?, presetTypeID: String?) {
         self.assetID = assetID
         self.original = original
         let o = original
@@ -208,10 +208,10 @@ struct OperationFormView: View {
         }
     }
 
-    private func buildOperation() -> Operation? {
+    private func buildOperation() -> OperationRecord? {
         guard let typeID else { return nil }
         let opType = store.data.operationType(typeID)
-        var op = original ?? Operation(assetID: assetID, typeID: typeID, date: date)
+        var op = original ?? OperationRecord(assetID: assetID, typeID: typeID, date: date)
         op.typeID = typeID
         op.date = date
         op.meter = Fmt.parseNumber(meter)

@@ -2,7 +2,7 @@ import Foundation
 
 /// One row of an object's history.
 public enum TimelineEvent: Equatable, Sendable, Identifiable {
-    case operation(Operation)
+    case operation(OperationRecord)
     case reading(MeterReading)
     /// `other` is the host (for a component) or the component (for a host).
     case mounted(Mounting, otherID: String)

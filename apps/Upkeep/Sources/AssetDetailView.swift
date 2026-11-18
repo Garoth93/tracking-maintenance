@@ -5,7 +5,7 @@ import UpkeepCore
 enum DetailSheet: Identifiable {
     case edit
     case newOperation(typeID: String?)
-    case editOperation(Operation)
+    case editOperation(OperationRecord)
     case meter
     case mount
     case unmount
