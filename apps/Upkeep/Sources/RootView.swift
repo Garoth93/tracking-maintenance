@@ -25,19 +25,25 @@ struct RootView: View {
     @State private var paths: [AppTab: [Route]] = [:]
 
     var body: some View {
-        ZStack {
-            ForEach(AppTab.allCases) { tab in
-                let active = store.selectedTab == tab
-                NavigationStack(path: pathBinding(tab)) {
-                    tabRoot(tab)
-                        .navigationDestination(for: Route.self) { RouteDestination(route: $0) }
+        // The navigation bar is stacked below the content (not inset over it), so every
+        // screen — and its floating "+" button — ends exactly above the bar.
+        VStack(spacing: 0) {
+            ZStack {
+                ForEach(AppTab.allCases) { tab in
+                    let active = store.selectedTab == tab
+                    NavigationStack(path: pathBinding(tab)) {
+                        tabRoot(tab)
+                            .navigationDestination(for: Route.self) { RouteDestination(route: $0) }
+                    }
+                    .opacity(active ? 1 : 0)
+                    .allowsHitTesting(active)
+                    .accessibilityHidden(!active)
                 }
-                .opacity(active ? 1 : 0)
-                .allowsHitTesting(active)
-                .accessibilityHidden(!active)
             }
-        }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            // Snackbar above the floating button of the current screen.
+            .overlay(alignment: .bottom) { ToastView().padding(.bottom, 88) }
+
             M3NavigationBar(selection: Binding(
                 get: { store.selectedTab },
                 set: { tab in
@@ -50,7 +56,6 @@ struct RootView: View {
             ), badges: [.deadlines: urgentCount])
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
-        .overlay(alignment: .bottom) { ToastView().padding(.bottom, 92) }
         .animation(.spring(duration: 0.35), value: store.toast?.id)
         .sensoryFeedback(.success, trigger: store.successCount)
         .alert(
