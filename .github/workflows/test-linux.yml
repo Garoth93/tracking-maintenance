@@ -18,6 +18,7 @@ concurrency:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     container:
       image: swift:6.0-noble   # pinned; see CLAUDE.md "Toolchain"
     steps:
